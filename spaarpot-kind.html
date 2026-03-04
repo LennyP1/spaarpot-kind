@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spaarpot — Voor je kind</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;0,9..144,800;1,9..144,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #FDF6EC;
+    --warm-white: #FFFBF5;
+    --terracotta: #D96C3F;
+    --terracotta-light: #F0906A;
+    --sage: #6B8F71;
+    --sage-light: #A8C5AD;
+    --gold: #E8A838;
+    --gold-light: #F5CC7A;
+    --ink: #2C2417;
+    --ink-soft: #6B5C45;
+    --border: #E8DCCF;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background-color: var(--cream);
+    color: var(--ink);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Decorative background */
+  body::before {
+    content: '';
+    position: fixed;
+    top: -200px; right: -200px;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(232,168,56,0.12) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+  body::after {
+    content: '';
+    position: fixed;
+    bottom: -150px; left: -150px;
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(107,143,113,0.10) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Header */
+  .header {
+    text-align: center;
+    margin-bottom: 52px;
+    animation: fadeUp 0.7s ease both;
+  }
+
+  .piggy-icon {
+    font-size: 56px;
+    display: block;
+    margin-bottom: 16px;
+    animation: bounce 2s ease infinite;
+  }
+
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
+  }
+
+  .header h1 {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(2rem, 6vw, 3rem);
+    font-weight: 800;
+    color: var(--ink);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+  }
+
+  .header h1 span {
+    color: var(--terracotta);
+    font-style: italic;
+  }
+
+  .header p {
+    margin-top: 12px;
+    font-size: 1rem;
+    color: var(--ink-soft);
+    font-weight: 300;
+    line-height: 1.6;
+  }
+
+  /* Card */
+  .card {
+    background: var(--warm-white);
+    border-radius: 24px;
+    padding: 36px 32px;
+    border: 1.5px solid var(--border);
+    box-shadow: 0 4px 40px rgba(44,36,23,0.06);
+    animation: fadeUp 0.7s ease 0.1s both;
+  }
+
+  @media (max-width: 480px) {
+    .card { padding: 24px 20px; }
+  }
+
+  /* Form fields */
+  .field {
+    margin-bottom: 28px;
+  }
+
+  .field label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--ink-soft);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 10px;
+  }
+
+  .field label .emoji { font-size: 1rem; }
+
+  .field-value {
+    font-family: 'Fraunces', serif;
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 8px;
+  }
+
+  input[type="range"] {
+    width: 100%;
+    -webkit-appearance: none;
+    height: 6px;
+    border-radius: 3px;
+    background: var(--border);
+    outline: none;
+    cursor: pointer;
+  }
+
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    background: var(--terracotta);
+    box-shadow: 0 2px 8px rgba(217,108,63,0.35);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  input[type="range"]::-webkit-slider-thumb:hover {
+    transform: scale(1.15);
+    box-shadow: 0 3px 12px rgba(217,108,63,0.5);
+  }
+
+  .range-labels {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 6px;
+    font-size: 0.75rem;
+    color: var(--ink-soft);
+    opacity: 0.6;
+  }
+
+  /* Toggle buttons */
+  .toggle-group {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .toggle-btn {
+    padding: 10px 18px;
+    border-radius: 50px;
+    border: 1.5px solid var(--border);
+    background: transparent;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 400;
+    color: var(--ink-soft);
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .toggle-btn:hover {
+    border-color: var(--terracotta-light);
+    color: var(--terracotta);
+  }
+
+  .toggle-btn.active {
+    background: var(--terracotta);
+    border-color: var(--terracotta);
+    color: white;
+    font-weight: 500;
+    box-shadow: 0 3px 12px rgba(217,108,63,0.3);
+  }
+
+  /* Divider */
+  .divider {
+    height: 1px;
+    background: var(--border);
+    margin: 32px 0;
+  }
+
+  /* Result section */
+  .result {
+    text-align: center;
+    padding: 8px 0;
+    animation: fadeUp 0.5s ease both;
+  }
+
+  .result-label {
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--ink-soft);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 8px;
+  }
+
+  .result-amount {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(2.8rem, 10vw, 4.5rem);
+    font-weight: 800;
+    color: var(--terracotta);
+    line-height: 1;
+    letter-spacing: -0.02em;
+    transition: all 0.4s ease;
+  }
+
+  .result-age {
+    margin-top: 6px;
+    font-size: 0.95rem;
+    color: var(--ink-soft);
+    font-weight: 300;
+  }
+
+  /* Breakdown cards */
+  .breakdown {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+    margin-top: 28px;
+  }
+
+  @media (max-width: 400px) {
+    .breakdown { grid-template-columns: 1fr; }
+  }
+
+  .breakdown-item {
+    background: var(--cream);
+    border-radius: 16px;
+    padding: 16px;
+    text-align: center;
+    border: 1px solid var(--border);
+  }
+
+  .breakdown-item .b-label {
+    font-size: 0.72rem;
+    color: var(--ink-soft);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 6px;
+  }
+
+  .breakdown-item .b-value {
+    font-family: 'Fraunces', serif;
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  .breakdown-item.highlight .b-value {
+    color: var(--sage);
+  }
+
+  /* Progress bar */
+  .progress-wrap {
+    margin-top: 24px;
+  }
+
+  .progress-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.75rem;
+    color: var(--ink-soft);
+    margin-bottom: 8px;
+  }
+
+  .progress-bar {
+    height: 10px;
+    background: var(--border);
+    border-radius: 5px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    border-radius: 5px;
+    background: linear-gradient(90deg, var(--sage-light), var(--sage));
+    transition: width 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    position: relative;
+  }
+
+  .progress-fill::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.3) 50%, transparent 100%);
+    animation: shimmer 2s ease infinite;
+  }
+
+  @keyframes shimmer {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+  }
+
+  /* Message */
+  .message {
+    margin-top: 24px;
+    background: linear-gradient(135deg, #FFF8EC, #FFF3E0);
+    border-radius: 16px;
+    padding: 20px 24px;
+    border-left: 4px solid var(--gold);
+    font-size: 0.95rem;
+    color: var(--ink);
+    line-height: 1.6;
+    font-style: italic;
+    font-family: 'Fraunces', serif;
+    font-weight: 300;
+  }
+
+  .message strong {
+    font-weight: 600;
+    font-style: normal;
+    color: var(--terracotta);
+  }
+
+  /* Footer note */
+  .footnote {
+    margin-top: 32px;
+    text-align: center;
+    font-size: 0.75rem;
+    color: var(--ink-soft);
+    opacity: 0.5;
+    line-height: 1.6;
+    animation: fadeUp 0.7s ease 0.3s both;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <header class="header">
+    <span class="piggy-icon">🐷</span>
+    <h1>Spaarpot voor<br><span>je kind</span></h1>
+    <p>Hoeveel heeft jouw kind later?<br>Reken het in 30 seconden uit.</p>
+  </header>
+
+  <div class="card">
+
+    <!-- Leeftijd kind -->
+    <div class="field">
+      <label><span class="emoji">👶</span> Leeftijd van je kind</label>
+      <div class="field-value" id="age-display">3 jaar</div>
+      <input type="range" id="child-age" min="0" max="17" value="3"
+             oninput="updateAge(this.value); calculate()">
+      <div class="range-labels"><span>Pasgeboren</span><span>17 jaar</span></div>
+    </div>
+
+    <!-- Maandelijks bedrag -->
+    <div class="field">
+      <label><span class="emoji">💶</span> Maandelijks inleggen</label>
+      <div class="field-value" id="amount-display">€ 50 per maand</div>
+      <input type="range" id="monthly" min="10" max="500" step="10" value="50"
+             oninput="updateAmount(this.value); calculate()">
+      <div class="range-labels"><span>€10</span><span>€500</span></div>
+    </div>
+
+    <!-- Sparen of beleggen -->
+    <div class="field">
+      <label><span class="emoji">📈</span> Hoe wil je het opbouwen?</label>
+      <div class="toggle-group" id="method-group">
+        <button class="toggle-btn active" onclick="setMethod('sparen', this)">🏦 Sparen</button>
+        <button class="toggle-btn" onclick="setMethod('defensief', this)">🌿 Voorzichtig beleggen</button>
+        <button class="toggle-btn" onclick="setMethod('beleggen', this)">🚀 Actief beleggen</button>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Resultaat -->
+    <div class="result">
+      <div class="result-label">Jouw kind heeft op 18-jarige leeftijd</div>
+      <div class="result-amount" id="result-amount">€ 0</div>
+      <div class="result-age" id="result-years"></div>
+
+      <div class="breakdown">
+        <div class="breakdown-item">
+          <div class="b-label">Zelf ingelegd</div>
+          <div class="b-value" id="b-inleg">€0</div>
+        </div>
+        <div class="breakdown-item highlight">
+          <div class="b-label">Rendement</div>
+          <div class="b-value" id="b-rendement">€0</div>
+        </div>
+        <div class="breakdown-item">
+          <div class="b-label">Rente/jaar</div>
+          <div class="b-value" id="b-rate">2%</div>
+        </div>
+      </div>
+
+      <div class="progress-wrap">
+        <div class="progress-labels">
+          <span>Inleg</span>
+          <span id="progress-pct">0% rendement</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
+        </div>
+      </div>
+
+      <div class="message" id="message-box"></div>
+    </div>
+
+  </div>
+
+  <p class="footnote">
+    Dit is een indicatie op basis van een vast rendement.<br>
+    Rendementen uit het verleden bieden geen garantie voor de toekomst.
+  </p>
+
+</div>
+
+<script>
+  let currentMethod = 'sparen';
+  const rates = { sparen: 0.02, defensief: 0.05, beleggen: 0.08 };
+  const rateLabels = { sparen: '2% rente', defensief: '5% gemiddeld', beleggen: '8% gemiddeld' };
+
+  function updateAge(v) {
+    document.getElementById('age-display').textContent = v == 0 ? 'Pasgeboren' : `${v} jaar`;
+  }
+
+  function updateAmount(v) {
+    document.getElementById('amount-display').textContent = `€ ${v} per maand`;
+  }
+
+  function setMethod(method, btn) {
+    currentMethod = method;
+    document.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    calculate();
+  }
+
+  function formatEuro(n) {
+    return '€ ' + Math.round(n).toLocaleString('nl-NL');
+  }
+
+  function calculate() {
+    const age = parseInt(document.getElementById('child-age').value);
+    const monthly = parseInt(document.getElementById('monthly').value);
+    const years = 18 - age;
+    const rate = rates[currentMethod];
+    const monthlyRate = rate / 12;
+    const months = years * 12;
+
+    let total = 0;
+    if (monthlyRate > 0 && months > 0) {
+      total = monthly * ((Math.pow(1 + monthlyRate, months) - 1) / monthlyRate);
+    } else {
+      total = monthly * months;
+    }
+
+    const inleg = monthly * months;
+    const rendement = total - inleg;
+    const pct = total > 0 ? Math.round((rendement / total) * 100) : 0;
+
+    // Update UI
+    document.getElementById('result-amount').textContent = formatEuro(total);
+    document.getElementById('result-years').textContent =
+      years <= 0 ? 'Je kind is al 18!' : `Over ${years} jaar`;
+    document.getElementById('b-inleg').textContent = formatEuro(inleg);
+    document.getElementById('b-rendement').textContent = formatEuro(rendement);
+    document.getElementById('b-rate').textContent = rateLabels[currentMethod];
+    document.getElementById('progress-pct').textContent = `${pct}% rendement`;
+    document.getElementById('progress-fill').style.width = `${Math.min(pct, 100)}%`;
+
+    // Message
+    const msgs = {
+      studie: total >= 15000,
+      woning: total >= 30000,
+      rijles: total >= 2500,
+    };
+
+    let msg = '';
+    if (years <= 0) {
+      msg = 'Je kind is al 18 — misschien is het nog niet te laat om te starten! 🎓';
+    } else if (total >= 30000) {
+      msg = `Met <strong>${formatEuro(total)}</strong> geef je je kind een vliegende start — genoeg voor een studie én een steuntje bij een eerste woning.`;
+    } else if (total >= 15000) {
+      msg = `<strong>${formatEuro(total)}</strong> is een mooie studiebijdrage — een heel studiejaar of meer, puur door nu klein te beginnen.`;
+    } else if (total >= 3000) {
+      msg = `<strong>${formatEuro(total)}</strong> — rijlessen, een laptop, eerste maand huur. Kleine inleg, groot verschil.`;
+    } else {
+      msg = `Elke euro telt. Start klein, verhoog later — de tijd werkt voor je. 🌱`;
+    }
+
+    document.getElementById('message-box').innerHTML = msg;
+  }
+
+  // Init
+  calculate();
+</script>
+</body>
+</html>
